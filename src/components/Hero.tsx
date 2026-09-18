@@ -50,10 +50,26 @@ class Solution {
 
   const currentCode = activeTab === 'spars' ? sparsCode : dsaCode;
 
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(currentCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyCode = async () => {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(currentCode);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = currentCode;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback silent catch
+    }
   };
 
   const hasGithub = Boolean(CONTACT_CONFIG.GITHUB_URL && CONTACT_CONFIG.GITHUB_URL.trim() !== '');

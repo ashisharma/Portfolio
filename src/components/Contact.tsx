@@ -21,11 +21,27 @@ export const Contact: React.FC = () => {
   const hasLinkedIn = Boolean(CONTACT_CONFIG.LINKEDIN_URL && CONTACT_CONFIG.LINKEDIN_URL.trim() !== '');
   const hasLeetcode = Boolean(CONTACT_CONFIG.LEETCODE_URL && CONTACT_CONFIG.LEETCODE_URL.trim() !== '');
 
-  const handleCopyEmail = () => {
+  const handleCopyEmail = async () => {
     if (!hasEmail) return;
-    navigator.clipboard.writeText(CONTACT_CONFIG.EMAIL);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2500);
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(CONTACT_CONFIG.EMAIL);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = CONTACT_CONFIG.EMAIL;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2500);
+    } catch {
+      // Fallback silent catch
+    }
   };
 
   return (

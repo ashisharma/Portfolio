@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FileText, X, Mail, Download, ExternalLink, Code } from 'lucide-react';
 import { CONTACT_CONFIG, DEVELOPER_INFO } from '../data/portfolioData';
 
@@ -8,6 +8,24 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const hasResume = Boolean(CONTACT_CONFIG.RESUME_URL && CONTACT_CONFIG.RESUME_URL.trim() !== '');
