@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f17"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0b0f17"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0b0f17" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1" stroke-opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Border Highlight -->
+  <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#334155" stroke-width="2" stroke-opacity="0.6"/>
+  <rect x="24" y="24" width="1152" height="5" rx="2" fill="url(#accentGrad)"/>
+
+  <!-- Brand Badge / Avatar Icon -->
+  <g transform="translate(80, 80)">
+    <rect width="70" height="70" rx="16" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
+    <text x="35" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="38" font-weight="bold" fill="#10b981" text-anchor="middle">A</text>
+    
+    <text x="90" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="700" fill="#f8fafc">ASHISH</text>
+    <text x="90" y="58" font-family="'Courier New', monospace" font-size="15" fill="#10b981" font-weight="600">PORTFOLIO &amp; SHOWCASE</text>
+  </g>
+
+  <!-- Status Pill -->
+  <g transform="translate(880, 85)">
+    <rect width="240" height="42" rx="21" fill="#0f172a" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.6"/>
+    <circle cx="24" cy="21" r="6" fill="#10b981"/>
+    <text x="42" y="26" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#6ee7b7">Available for Roles</text>
+  </g>
+
+  <!-- Main Heading -->
+  <text x="80" y="250" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="56" font-weight="800" fill="#ffffff" letter-spacing="-1">
+    Java Developer &amp; Problem Solver
+  </text>
+
+  <!-- Description -->
+  <text x="80" y="310" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" fill="#94a3b8" font-weight="400">
+    Building practical software architectures • Data Structures &amp; Algorithms enthusiast
+  </text>
+  <text x="80" y="348" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" fill="#94a3b8" font-weight="400">
+    Creator of <tspan fill="#34d399" font-weight="700">SPARS</tspan> (Student Performance &amp; Skill Assessment System)
+  </text>
+
+  <!-- Tags Container -->
+  <g transform="translate(80, 410)">
+    <!-- Pill 1: Core Java -->
+    <g transform="translate(0, 0)">
+      <rect width="130" height="44" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="65" y="27" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#38bdf8" text-anchor="middle">Core Java</text>
+    </g>
+
+    <!-- Pill 2: DSA -->
+    <g transform="translate(146, 0)">
+      <rect width="180" height="44" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="90" y="27" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#34d399" text-anchor="middle">Data Structures</text>
+    </g>
+
+    <!-- Pill 3: React & Vite -->
+    <g transform="translate(342, 0)">
+      <rect width="140" height="44" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="70" y="27" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#a78bfa" text-anchor="middle">React • Vite</text>
+    </g>
+
+    <!-- Pill 4: Firebase -->
+    <g transform="translate(498, 0)">
+      <rect width="120" height="44" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="60" y="27" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#fbbf24" text-anchor="middle">Firebase</text>
+    </g>
+
+    <!-- Pill 5: Gemini API -->
+    <g transform="translate(634, 0)">
+      <rect width="140" height="44" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <text x="70" y="27" font-family="'Courier New', monospace" font-size="15" font-weight="bold" fill="#f43f5e" text-anchor="middle">Gemini API</text>
+    </g>
+  </g>
+
+  <!-- Footer Info Line -->
+  <g transform="translate(80, 530)">
+    <line x1="0" y1="0" x2="1040" y2="0" stroke="#1e293b" stroke-width="1.5"/>
+    <text x="0" y="36" font-family="'Courier New', monospace" font-size="16" fill="#64748b">
+      github.com/ashisharma/Portfolio
+    </text>
+    <text x="1040" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" fill="#10b981" font-weight="600" text-anchor="end">
+      Interactive Engineering Portfolio ⚡
+    </text>
+  </g>
+</svg>

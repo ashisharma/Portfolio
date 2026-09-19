@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { FileText, X, Mail, Download, ExternalLink, Code } from 'lucide-react';
-import { CONTACT_CONFIG, DEVELOPER_INFO } from '../data/portfolioData';
+import { DEVELOPER_INFO } from '../data/portfolioData';
+import { getSafeEmail, getSafeResumeUrl } from '../utils/contactUtils';
+import { getSecureLinkProps } from '../utils/security';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -28,7 +30,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
 
   if (!isOpen) return null;
 
-  const hasResume = Boolean(CONTACT_CONFIG.RESUME_URL && CONTACT_CONFIG.RESUME_URL.trim() !== '');
+  const safeResumeUrl = getSafeResumeUrl();
+  const safeEmail = getSafeEmail();
+  const resumeLinkProps = safeResumeUrl ? getSecureLinkProps(safeResumeUrl) : null;
 
   return (
     <div
@@ -65,15 +69,13 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           </button>
         </div>
 
-        {hasResume ? (
+        {resumeLinkProps ? (
           <div className="space-y-4 text-sm text-slate-300">
             <p>
               Your configured resume is ready to view or download.
             </p>
             <a
-              href={CONTACT_CONFIG.RESUME_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...resumeLinkProps}
               className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold transition-all shadow-md"
             >
               <Download className="w-4 h-4" />
@@ -93,17 +95,21 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               </p>
             </div>
 
-            <p className="text-xs text-slate-400">
-              For immediate recruiting inquiries or direct placement discussions, feel free to contact Ashish directly:
-            </p>
+            {safeEmail && (
+              <>
+                <p className="text-xs text-slate-400">
+                  For immediate recruiting inquiries or direct placement discussions, feel free to contact Ashish directly:
+                </p>
 
-            <a
-              href={`mailto:${CONTACT_CONFIG.EMAIL}?subject=Regarding%20Software%20Developer%20Opportunity`}
-              className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs transition-all shadow-md"
-            >
-              <Mail className="w-4 h-4" />
-              <span>Contact via Email ({CONTACT_CONFIG.EMAIL})</span>
-            </a>
+                <a
+                  href={`mailto:${safeEmail}?subject=Regarding%20Software%20Developer%20Opportunity`}
+                  className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs transition-all shadow-md"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Contact via Email ({safeEmail})</span>
+                </a>
+              </>
+            )}
           </div>
         )}
 

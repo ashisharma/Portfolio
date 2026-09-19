@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070b12"/>
+      <stop offset="50%" stop-color="#0b1329"/>
+      <stop offset="100%" stop-color="#070b12"/>
+    </linearGradient>
+    <linearGradient id="sparsAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="cardGlow" cx="20%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0b1329" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="18" cy="18" r="1" fill="#334155" opacity="0.4"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <rect width="1200" height="630" fill="url(#cardGlow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Border Highlight -->
+  <rect x="24" y="24" width="1152" height="582" rx="24" fill="none" stroke="#1e293b" stroke-width="2"/>
+  <rect x="24" y="24" width="1152" height="6" rx="3" fill="url(#sparsAccent)"/>
+
+  <!-- Category & Project Badge -->
+  <g transform="translate(80, 75)">
+    <rect width="210" height="38" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+    <text x="105" y="24" font-family="'Courier New', monospace" font-size="13" font-weight="700" fill="#34d399" text-anchor="middle">★ FEATURED PROJECT</text>
+
+    <rect x="226" y="0" width="170" height="38" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <text x="311" y="24" font-family="'Courier New', monospace" font-size="13" font-weight="600" fill="#94a3b8" text-anchor="middle">v1.0-alpha</text>
+  </g>
+
+  <!-- Author branding top right -->
+  <g transform="translate(940, 80)">
+    <circle cx="20" cy="16" r="16" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+    <text x="20" y="21" font-family="-apple-system, sans-serif" font-size="16" font-weight="bold" fill="#10b981" text-anchor="middle">A</text>
+    <text x="45" y="16" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#f1f5f9">By Ashish</text>
+    <text x="45" y="30" font-family="'Courier New', monospace" font-size="11" fill="#64748b">Java Developer</text>
+  </g>
+
+  <!-- Main Project Title -->
+  <text x="80" y="210" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" fill="#ffffff" letter-spacing="-1.5">
+    SPARS
+  </text>
+  <text x="80" y="260" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" fill="#34d399">
+    Student Performance &amp; Skill Assessment System
+  </text>
+
+  <!-- Problem / Solution Overview Paragraph -->
+  <text x="80" y="325" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" fill="#cbd5e1" font-weight="400">
+    An academic diagnostic platform analyzing multi-subject test scores and learning gaps.
+  </text>
+  <text x="80" y="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" fill="#94a3b8" font-weight="400">
+    Combines Java business logic, Firebase real-time sync, and Gemini AI recommendations.
+  </text>
+
+  <!-- Architecture / Stack Grid -->
+  <g transform="translate(80, 420)">
+    <g transform="translate(0, 0)">
+      <rect width="180" height="50" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+      <circle cx="25" cy="25" r="5" fill="#10b981"/>
+      <text x="42" y="31" font-family="'Courier New', monospace" font-size="16" font-weight="700" fill="#e2e8f0">Java Core</text>
+    </g>
+
+    <g transform="translate(200, 0)">
+      <rect width="180" height="50" rx="10" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+      <circle cx="25" cy="25" r="5" fill="#3b82f6"/>
+      <text x="42" y="31" font-family="'Courier New', monospace" font-size="16" font-weight="700" fill="#e2e8f0">React • UI</text>
+    </g>
+
+    <g transform="translate(400, 0)">
+      <rect width="180" height="50" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+      <circle cx="25" cy="25" r="5" fill="#f59e0b"/>
+      <text x="42" y="31" font-family="'Courier New', monospace" font-size="16" font-weight="700" fill="#e2e8f0">Firebase Sync</text>
+    </g>
+
+    <g transform="translate(600, 0)">
+      <rect width="200" height="50" rx="10" fill="#0f172a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <circle cx="25" cy="25" r="5" fill="#8b5cf6"/>
+      <text x="42" y="31" font-family="'Courier New', monospace" font-size="16" font-weight="700" fill="#e2e8f0">Gemini AI Engine</text>
+    </g>
+  </g>
+
+  <!-- Footer Link Details -->
+  <g transform="translate(80, 540)">
+    <line x1="0" y1="0" x2="1040" y2="0" stroke="#1e293b" stroke-width="1.5"/>
+    <text x="0" y="35" font-family="'Courier New', monospace" font-size="15" fill="#64748b">
+      Project Showcase • https://ashisharma.github.io/Portfolio/#project-spars
+    </text>
+    <text x="1040" y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" fill="#34d399" font-weight="600" text-anchor="end">
+      Explore SPARS Architecture →
+    </text>
+  </g>
+</svg>

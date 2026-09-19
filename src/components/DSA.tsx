@@ -17,6 +17,7 @@ import {
   CONTACT_CONFIG,
   PracticedProblem 
 } from '../data/portfolioData';
+import { isSafeUrl, getSecureLinkProps } from '../utils/security';
 
 export const DSA: React.FC = () => {
   const [filterDifficulty, setFilterDifficulty] = useState<'All' | 'Easy' | 'Medium' | 'Hard'>('All');
@@ -58,7 +59,8 @@ export const DSA: React.FC = () => {
     }
   };
 
-  const hasLeetcode = Boolean(CONTACT_CONFIG.LEETCODE_URL && CONTACT_CONFIG.LEETCODE_URL.trim() !== '');
+  const hasLeetcode = isSafeUrl(CONTACT_CONFIG.LEETCODE_URL);
+  const leetcodeLinkProps = hasLeetcode ? getSecureLinkProps(CONTACT_CONFIG.LEETCODE_URL) : null;
 
   return (
     <section id="dsa" className="py-20 border-t border-slate-800/60 relative">
@@ -81,11 +83,9 @@ export const DSA: React.FC = () => {
 
           {/* View LeetCode Button */}
           <div className="shrink-0">
-            {hasLeetcode ? (
+            {leetcodeLinkProps ? (
               <a
-                href={CONTACT_CONFIG.LEETCODE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                {...leetcodeLinkProps}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold tracking-wide transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
               >
                 <Terminal className="w-4 h-4" />

@@ -15,13 +15,16 @@ export interface ContactConfig {
   LINKEDIN_URL: string;
   LEETCODE_URL: string;
   RESUME_URL: string;
+  INSTAGRAM_URL: string;
+  WHATSAPP_URL: string;
+  TWITTER_URL: string;
 }
 
 export const CONTACT_CONFIG: ContactConfig = {
   // Your professional email address
   EMAIL: 'ashish7380123@gmail.com',
 
-  // EDIT HERE: Replace with your actual GitHub profile URL (e.g., 'https://github.com/ashish')
+  // EDIT HERE: Replace with your actual GitHub profile URL (e.g., 'https://github.com/ashisharma')
   // If left empty (""), the button will be hidden cleanly.
   GITHUB_URL: 'https://github.com/ashisharma',
 
@@ -36,6 +39,18 @@ export const CONTACT_CONFIG: ContactConfig = {
   // EDIT HERE: Path or URL to your PDF resume (e.g., '/resume.pdf' or a Google Drive public link)
   // If left empty (""), a clean modal preview or contact prompt is shown.
   RESUME_URL: '',
+
+  // EDIT HERE: Instagram profile URL (e.g., 'https://instagram.com/ashisharma')
+  // If left empty (""), the button will be hidden cleanly.
+  INSTAGRAM_URL: 'https://instagram.com/ashisharma',
+
+  // EDIT HERE: WhatsApp direct chat link (e.g., 'https://wa.me/91XXXXXXXXXX' or with a pre-filled greeting)
+  // If left empty (""), the button will be hidden cleanly.
+  WHATSAPP_URL: 'https://wa.me/?text=Hi%20Ashish,%20saw%20your%20portfolio!',
+
+  // EDIT HERE: Twitter / X profile URL (e.g., 'https://twitter.com/ashisharma' or 'https://x.com/ashisharma')
+  // If left empty (""), the button will be hidden cleanly.
+  TWITTER_URL: 'https://twitter.com/ashisharma',
 };
 
 export interface DeveloperInfo {
@@ -52,15 +67,15 @@ export interface DeveloperInfo {
 
 export const DEVELOPER_INFO: DeveloperInfo = {
   name: 'Ashish',
-  headline: 'Java Developer & Problem Solver',
-  identity: ['Java Developer', 'DSA Problem Solver', 'Web Developer'],
+  headline: 'HELLO AS16',
+  identity: ['Java Developer', 'Software Engineer', 'Web Developer'],
   statusLine: 'Currently building SPARS',
   heroText:
-    'Building practical software solutions while strengthening my skills in Java, Data Structures & Algorithms, and modern web development.',
+    'Building practical software solutions while strengthening my skills in Java, backend engineering, and modern web development.',
   about: {
     paragraphs: [
-      'I am an aspiring software engineer with a strong focus on core Java, object-oriented programming, and algorithmic problem-solving. My journey in tech is driven by curiosity and a desire to engineer resilient, high-performance software systems.',
-      'Alongside deep daily practice in Data Structures & Algorithms, I actively build full-stack web applications. I believe in clean code, modular architecture, and understanding foundational computer science concepts down to how data flows through memory and networks.',
+      'I am an aspiring software engineer with a strong focus on core Java, object-oriented programming, and practical software design. My journey in tech is driven by curiosity and a desire to engineer resilient, high-performance software systems.',
+      'Alongside deep practice in system design and clean coding, I actively build full-stack web applications. I believe in clean code, modular architecture, and understanding foundational computer science concepts down to how data flows through memory and networks.',
       'Currently, I am channeling my engineering focus into SPARS (Student Performance & Skill Assessment System) while continuously exploring modern web development and backend technologies.',
     ],
     focusAreas: [
@@ -69,8 +84,8 @@ export const DEVELOPER_INFO: DeveloperInfo = {
         description: 'Writing robust, maintainable code leveraging OOP principles, collections, and clean design patterns.',
       },
       {
-        title: 'Data Structures & Algorithms',
-        description: 'Disciplined practice tackling algorithmic complexity, optimal space-time tradeoffs, and patterns.',
+        title: 'Backend Engineering',
+        description: 'Disciplined practice tackling scalable architecture, efficient APIs, and optimal performance.',
       },
       {
         title: 'Web Engineering',
@@ -150,6 +165,10 @@ export interface ProjectItem {
   githubUrl: string;
   featured: boolean;
   isPlaceholder?: boolean;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 export const PROJECTS: ProjectItem[] = [
@@ -171,6 +190,11 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: 'https://github.com',
     featured: true,
     isPlaceholder: false,
+    ogTitle: 'SPARS | Student Performance & Skill Assessment System',
+    ogDescription:
+      'An academic diagnostic system analyzing multi-subject test results and learning gaps using Java, Firebase real-time sync, and Gemini AI recommendations. Built by Ashish.',
+    ogImage: 'og-spars.svg',
+    ogImageAlt: 'SPARS Student Performance and Skill Assessment System by Ashish',
   },
   {
     id: 'project-02',
@@ -190,6 +214,11 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: '',
     featured: false,
     isPlaceholder: true,
+    ogTitle: 'Software Engineering Project | Ashish Portfolio',
+    ogDescription:
+      'Detailed engineering challenge and software solution architecture built with Java and modern web technologies.',
+    ogImage: 'og-project-2.svg',
+    ogImageAlt: 'Software Engineering Project Showcase by Ashish',
   },
   {
     id: 'project-03',
@@ -209,6 +238,11 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: '',
     featured: false,
     isPlaceholder: true,
+    ogTitle: 'Full-Stack Technical Showcase | Ashish Portfolio',
+    ogDescription:
+      'Scalable web application and developer utility built with React, modular architecture, and modern database integration.',
+    ogImage: 'og-project-3.svg',
+    ogImageAlt: 'Full-Stack Technical Showcase by Ashish',
   },
 ];
 

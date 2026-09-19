@@ -8,14 +8,55 @@ import {
   AlertCircle, 
   Cpu, 
   Code2, 
-  Sparkles 
+  Sparkles,
+  Share2
 } from 'lucide-react';
 import { PROJECTS, ProjectItem } from '../data/portfolioData';
+import { applySeoMetadata, DEFAULT_SEO, getProjectSeo } from './MetaTags';
+import { SocialShareModal, SocialShareData } from './SocialShareModal';
 
 export const Projects: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [shareData, setShareData] = useState<SocialShareData | null>(null);
 
+  // Sync dynamic meta tags with selected project or URL hash
   useEffect(() => {
+    // Check if URL hash matches a project ID (e.g. #project-spars)
+    const checkHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.startsWith('#project-')) {
+        const projId = hash.replace('#project-', '');
+        const matched = PROJECTS.find((p) => p.id.toLowerCase() === projId);
+        if (matched) {
+          setSelectedProject(matched);
+          applySeoMetadata(getProjectSeo(matched));
+          return;
+        }
+      }
+      if (!selectedProject) {
+        applySeoMetadata(DEFAULT_SEO);
+      }
+    };
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, []);
+
+  // Update dynamic meta tags when user opens or closes a project modal
+  useEffect(() => {
+    if (selectedProject) {
+      applySeoMetadata(getProjectSeo(selectedProject));
+      if (window.location.hash !== `#project-${selectedProject.id}`) {
+        window.history.replaceState(null, '', `#project-${selectedProject.id}`);
+      }
+    } else {
+      applySeoMetadata(DEFAULT_SEO);
+      if (window.location.hash.startsWith('#project-')) {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
+
     if (!selectedProject) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,6 +73,21 @@ export const Projects: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedProject]);
+
+  const openShareModal = (project: ProjectItem) => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const pathname = typeof window !== 'undefined' ? window.location.pathname.replace(/\/+$/, '') : '';
+    const shareUrl = `${origin}${pathname}/#project-${project.id}`;
+
+    setShareData({
+      title: project.ogTitle || `${project.title} | ${project.fullName} - by Ashish`,
+      description: project.ogDescription || project.description,
+      image: project.ogImage || 'og-portfolio.svg',
+      imageAlt: project.ogImageAlt || project.title,
+      url: shareUrl,
+      badge: project.title,
+    });
+  };
 
   const featuredProject = PROJECTS.find((p) => p.featured) || PROJECTS[0];
   const placeholderProjects = PROJECTS.filter((p) => !p.featured);
@@ -55,7 +111,10 @@ export const Projects: React.FC = () => {
         </div>
 
         {/* 1. Primary Featured Project: SPARS */}
-        <div className="mb-12 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-[#0f172a]/90 via-[#0b0f17] to-[#0f172a]/90 p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden group">
+        <div 
+          id="project-spars"
+          className="mb-12 rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-[#0f172a]/90 via-[#0b0f17] to-[#0f172a]/90 p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden group"
+        >
           {/* Subtle accent corner glow */}
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -66,10 +125,24 @@ export const Projects: React.FC = () => {
               
               {/* Badge & Title */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-medium mb-3">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Primary Featured Project</span>
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-medium">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Primary Featured Project</span>
+                  </div>
+
+                  {/* Social Share / OG Card Trigger */}
+                  <button
+                    type="button"
+                    onClick={() => openShareModal(featuredProject)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-slate-300 hover:text-white text-xs font-mono transition-colors"
+                    title="Share project and preview OpenGraph card"
+                  >
+                    <Share2 className="w-3 h-3 text-emerald-400" />
+                    <span>Share / Social Card</span>
+                  </button>
                 </div>
+
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                   {featuredProject.title}
                 </h3>
@@ -161,6 +234,15 @@ export const Projects: React.FC = () => {
                       <span>Repo: Configurable</span>
                     </span>
                   )}
+
+                  <button
+                    type="button"
+                    onClick={() => openShareModal(featuredProject)}
+                    className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium transition-all"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Share Project</span>
+                  </button>
                 </div>
 
               </div>
@@ -228,6 +310,7 @@ export const Projects: React.FC = () => {
             {placeholderProjects.map((project) => (
               <div
                 key={project.id}
+                id={`project-${project.id}`}
                 className="rounded-xl border border-dashed border-slate-700/80 bg-slate-900/40 p-6 hover:border-emerald-500/40 hover:bg-slate-900/70 transition-all flex flex-col justify-between group"
               >
                 <div>
@@ -291,27 +374,43 @@ export const Projects: React.FC = () => {
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     ) : (
-                      <span className="text-slate-500 font-mono text-[11px]">
-                        Link: Configurable
-                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedProject(project)}
+                        className="text-emerald-400 hover:text-emerald-300 font-medium"
+                      >
+                        Preview Slot
+                      </button>
                     )}
                   </div>
 
-                  {project.githubUrl ? (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-slate-300 hover:text-white"
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => openShareModal(project)}
+                      className="inline-flex items-center gap-1 text-slate-400 hover:text-white transition-colors"
+                      title="Share and view social card"
                     >
-                      <Github className="w-3.5 h-3.5" />
-                      <span>GitHub</span>
-                    </a>
-                  ) : (
-                    <span className="text-slate-500 font-mono text-[11px]">
-                      GitHub: Configurable
-                    </span>
-                  )}
+                      <Share2 className="w-3.5 h-3.5" />
+                      <span>Share</span>
+                    </button>
+
+                    {project.githubUrl ? (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-slate-300 hover:text-white"
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        <span>GitHub</span>
+                      </a>
+                    ) : (
+                      <span className="text-slate-500 font-mono text-[11px]">
+                        GitHub: Configurable
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -379,7 +478,16 @@ export const Projects: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex justify-end">
+            <div className="pt-4 border-t border-slate-800 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => openShareModal(selectedProject)}
+                className="inline-flex items-center gap-1.5 text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 transition-colors"
+              >
+                <Share2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Share Project / OG Card</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
@@ -390,6 +498,15 @@ export const Projects: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Social Share & OpenGraph Preview Modal */}
+      {shareData && (
+        <SocialShareModal
+          isOpen={Boolean(shareData)}
+          onClose={() => setShareData(null)}
+          data={shareData}
+        />
       )}
     </section>
   );

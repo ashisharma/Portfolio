@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   ArrowDown, 
   Github, 
@@ -7,14 +7,14 @@ import {
   Terminal, 
   Sparkles, 
   Check, 
-  Copy, 
-  Layers
+  Copy
 } from 'lucide-react';
 import { CONTACT_CONFIG, DEVELOPER_INFO } from '../data/portfolioData';
+import { useClipboard } from '../hooks/useClipboard';
+import { getSecureLinkProps, isSafeUrl } from '../utils/security';
 
 export const Hero: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'spars' | 'dsa'>('spars');
-  const [copied, setCopied] = useState(false);
+  const { copied, copy } = useClipboard({ timeout: 2000 });
 
   const sparsCode = `// SPARS: Student Performance Assessment System
 public class SkillAssessmentService {
@@ -31,49 +31,17 @@ public class SkillAssessmentService {
     }
 }`;
 
-  const dsaCode = `// Two Pointers / Sliding Window Optimization
-class Solution {
-    public int minSubArrayLen(int target, int[] nums) {
-        int left = 0, currentSum = 0;
-        int minLength = Integer.MAX_VALUE;
+  const currentCode = sparsCode;
 
-        for (int right = 0; right < nums.length; right++) {
-            currentSum += nums[right];
-            while (currentSum >= target) {
-                minLength = Math.min(minLength, right - left + 1);
-                currentSum -= nums[left++]; // Shrink window
-            }
-        }
-        return minLength == Integer.MAX_VALUE ? 0 : minLength;
-    }
-}`;
-
-  const currentCode = activeTab === 'spars' ? sparsCode : dsaCode;
-
-  const handleCopyCode = async () => {
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(currentCode);
-      } else {
-        const textArea = document.createElement('textarea');
-        textArea.value = currentCode;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-      }
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback silent catch
-    }
+  const handleCopyCode = () => {
+    copy(currentCode);
   };
 
-  const hasGithub = Boolean(CONTACT_CONFIG.GITHUB_URL && CONTACT_CONFIG.GITHUB_URL.trim() !== '');
-  const hasLinkedIn = Boolean(CONTACT_CONFIG.LINKEDIN_URL && CONTACT_CONFIG.LINKEDIN_URL.trim() !== '');
+  const hasGithub = isSafeUrl(CONTACT_CONFIG.GITHUB_URL);
+  const hasLinkedIn = isSafeUrl(CONTACT_CONFIG.LINKEDIN_URL);
+
+  const githubProps = hasGithub ? getSecureLinkProps(CONTACT_CONFIG.GITHUB_URL) : null;
+  const linkedinProps = hasLinkedIn ? getSecureLinkProps(CONTACT_CONFIG.LINKEDIN_URL) : null;
 
   return (
     <section
@@ -132,11 +100,9 @@ class Solution {
               </a>
 
               {/* Primary Action: GitHub */}
-              {hasGithub && (
+              {githubProps && (
                 <a
-                  href={CONTACT_CONFIG.GITHUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...githubProps}
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-slate-700 hover:border-slate-500 bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-medium text-sm transition-all active:translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                 >
                   <Github className="w-4 h-4 text-slate-300" />
@@ -145,11 +111,9 @@ class Solution {
               )}
 
               {/* Secondary Action: LinkedIn (only shown if configured) */}
-              {hasLinkedIn && (
+              {linkedinProps && (
                 <a
-                  href={CONTACT_CONFIG.LINKEDIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...linkedinProps}
                   className="inline-flex items-center gap-2 px-4 py-3 rounded-lg border border-slate-700/80 hover:border-blue-500/40 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-blue-300 font-medium text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                 >
                   <Linkedin className="w-4 h-4 text-blue-400" />
@@ -165,7 +129,7 @@ class Solution {
                 Java
               </span>
               <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono">
-                DSA (LeetCode)
+                Spring Boot &amp; APIs
               </span>
               <span className="px-2.5 py-1 rounded-md bg-slate-800/80 border border-slate-700/60 text-slate-300 font-mono">
                 React &amp; Web
@@ -209,77 +173,32 @@ class Solution {
                 </button>
               </div>
 
-              {/* Editor Tabs */}
+              {/* Editor Tab */}
               <div className="flex items-center border-b border-slate-800/70 bg-slate-950/60 px-2 text-xs font-mono">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('spars')}
-                  className={`flex items-center gap-1.5 px-3 py-2 border-b-2 transition-colors ${
-                    activeTab === 'spars'
-                      ? 'border-emerald-400 text-emerald-300 bg-slate-900/60 font-medium'
-                      : 'border-transparent text-slate-400 hover:text-slate-200'
-                  }`}
-                >
+                <div className="flex items-center gap-1.5 px-3 py-2 border-b-2 border-emerald-400 text-emerald-300 bg-slate-900/60 font-medium">
                   <Code2 className="w-3.5 h-3.5 text-emerald-400" />
                   <span>SPARSAssessment.java</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('dsa')}
-                  className={`flex items-center gap-1.5 px-3 py-2 border-b-2 transition-colors ${
-                    activeTab === 'dsa'
-                      ? 'border-emerald-400 text-emerald-300 bg-slate-900/60 font-medium'
-                      : 'border-transparent text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  <Layers className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>SlidingWindow.java</span>
-                </button>
+                </div>
               </div>
 
               {/* Code Snippet Display with Syntax Highlighting */}
               <div className="p-4 overflow-x-auto text-[13px] leading-relaxed font-mono">
                 <pre className="text-slate-300 selection:bg-emerald-500/30">
                   <code>
-                    {activeTab === 'spars' ? (
-                      <>
-                        <span className="text-slate-500">// SPARS: Student Performance Assessment</span>{'\n'}
-                        <span className="text-purple-400">public class</span>{' '}
-                        <span className="text-emerald-300">SkillAssessmentService</span> &#123;{'\n'}
-                        {'    '}<span className="text-purple-400">private final</span> GeminiAnalyzer analyzer;{'\n'}
-                        {'    '}<span className="text-purple-400">private final</span> AssessmentRepo repo;{'\n\n'}
-                        {'    '}<span className="text-purple-400">public</span> SkillReport{' '}
-                        <span className="text-blue-400">evaluateStudent</span>(String id, List&lt;Score&gt; scores) &#123;{'\n'}
-                        {'        '}<span className="text-slate-500">// Map scores to curricular competencies</span>{'\n'}
-                        {'        '}Map&lt;Skill, Double&gt; matrix = <span className="text-blue-400">calcProficiency</span>(scores);{'\n'}
-                        {'        '}List&lt;Gap&gt; gaps = <span className="text-blue-400">identifyGaps</span>(matrix);{'\n\n'}
-                        {'        '}<span className="text-purple-400">return new</span>{' '}
-                        <span className="text-emerald-300">SkillReport</span>(id, matrix, gaps);{'\n'}
-                        {'    '}&#125;{'\n'}
-                        &#125;
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-slate-500">// O(N) Sliding Window: Min Subarray Length</span>{'\n'}
-                        <span className="text-purple-400">class</span>{' '}
-                        <span className="text-emerald-300">Solution</span> &#123;{'\n'}
-                        {'    '}<span className="text-purple-400">public int</span>{' '}
-                        <span className="text-blue-400">minSubArrayLen</span>(int target, int[] nums) &#123;{'\n'}
-                        {'        '}<span className="text-purple-400">int</span> left = 0, currentSum = 0;{'\n'}
-                        {'        '}<span className="text-purple-400">int</span> minLen = Integer.MAX_VALUE;{'\n\n'}
-                        {'        '}<span className="text-purple-400">for</span> (<span className="text-purple-400">int</span> right = 0; right &lt; nums.length; right++) &#123;{'\n'}
-                        {'            '}currentSum += nums[right];{'\n'}
-                        {'            '}<span className="text-purple-400">while</span> (currentSum &gt;= target) &#123;{'\n'}
-                        {'                '}minLen = Math.<span className="text-blue-400">min</span>(minLen, right - left + 1);{'\n'}
-                        {'                '}currentSum -= nums[left++]; <span className="text-slate-500">// Shrink</span>{'\n'}
-                        {'            '}&#125;{'\n'}
-                        {'        '}&#125;{'\n'}
-                        {'        '}<span className="text-purple-400">return</span> minLen == Integer.MAX_VALUE ? 0 : minLen;{'\n'}
-                        {'    '}&#125;{'\n'}
-                        &#125;
-                      </>
-                    )}
+                    <span className="text-slate-500">// SPARS: Student Performance Assessment</span>{'\n'}
+                    <span className="text-purple-400">public class</span>{' '}
+                    <span className="text-emerald-300">SkillAssessmentService</span> &#123;{'\n'}
+                    {'    '}<span className="text-purple-400">private final</span> GeminiAnalyzer analyzer;{'\n'}
+                    {'    '}<span className="text-purple-400">private final</span> AssessmentRepo repo;{'\n\n'}
+                    {'    '}<span className="text-purple-400">public</span> SkillReport{' '}
+                    <span className="text-blue-400">evaluateStudent</span>(String id, List&lt;Score&gt; scores) &#123;{'\n'}
+                    {'        '}<span className="text-slate-500">// Map scores to curricular competencies</span>{'\n'}
+                    {'        '}Map&lt;Skill, Double&gt; matrix = <span className="text-blue-400">calcProficiency</span>(scores);{'\n'}
+                    {'        '}List&lt;Gap&gt; gaps = <span className="text-blue-400">identifyGaps</span>(matrix);{'\n\n'}
+                    {'        '}<span className="text-purple-400">return new</span>{' '}
+                    <span className="text-emerald-300">SkillReport</span>(id, matrix, gaps);{'\n'}
+                    {'    '}&#125;{'\n'}
+                    &#125;
                   </code>
                 </pre>
               </div>

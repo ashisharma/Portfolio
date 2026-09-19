@@ -1,14 +1,15 @@
-import React from 'react';
-import { Github, Linkedin, ArrowUp, Code2 } from 'lucide-react';
-import { CONTACT_CONFIG, DEVELOPER_INFO } from '../data/portfolioData';
+import React, { useMemo } from 'react';
+import { ArrowUp, Code2 } from 'lucide-react';
+import { DEVELOPER_INFO } from '../data/portfolioData';
+import { getActiveSocialChannels } from '../utils/contactUtils';
+import { getSecureLinkProps } from '../utils/security';
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const hasGithub = Boolean(CONTACT_CONFIG.GITHUB_URL && CONTACT_CONFIG.GITHUB_URL.trim() !== '');
-  const hasLinkedIn = Boolean(CONTACT_CONFIG.LINKEDIN_URL && CONTACT_CONFIG.LINKEDIN_URL.trim() !== '');
+  const socialChannels = useMemo(() => getActiveSocialChannels(), []);
 
   return (
     <footer className="border-t border-slate-800/80 bg-[#080b11] py-8 text-slate-400 text-xs">
@@ -26,30 +27,25 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Social Icons (if configured) + Scroll to Top */}
-          <div className="flex items-center gap-4">
-            {hasGithub && (
-              <a
-                href={CONTACT_CONFIG.GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors p-1"
-                aria-label="GitHub"
-              >
-                <Github className="w-4 h-4" />
-              </a>
-            )}
+          <div className="flex items-center gap-3">
+            {socialChannels.map((channel) => {
+              const IconComponent = channel.icon;
+              const linkProps = getSecureLinkProps(channel.url);
 
-            {hasLinkedIn && (
-              <a
-                href={CONTACT_CONFIG.LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-blue-400 transition-colors p-1"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
-            )}
+              return (
+                <a
+                  key={channel.id}
+                  {...linkProps}
+                  className={`text-slate-400 ${channel.hoverTextClass} transition-colors p-1`}
+                  aria-label={channel.ariaLabel}
+                  title={channel.label}
+                >
+                  <IconComponent className="w-4 h-4" />
+                </a>
+              );
+            })}
+
+            <div className="h-4 w-px bg-slate-800 mx-1" />
 
             <button
               type="button"
@@ -67,3 +63,4 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+

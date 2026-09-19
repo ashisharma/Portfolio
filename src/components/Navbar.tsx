@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, FileText, ExternalLink, Code2 } from 'lucide-react';
-import { CONTACT_CONFIG, DEVELOPER_INFO } from '../data/portfolioData';
+import { DEVELOPER_INFO } from '../data/portfolioData';
+import { getSafeResumeUrl } from '../utils/contactUtils';
 
 interface NavbarProps {
   onOpenResumeModal?: () => void;
@@ -11,6 +12,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResumeModal }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
+  const safeResumeUrl = getSafeResumeUrl();
+
   useEffect(() => {
     let ticking = false;
 
@@ -20,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResumeModal }) => {
           setIsScrolled(window.scrollY > 20);
 
           // Determine active section for nav indicator
-          const sections = ['about', 'skills', 'projects', 'dsa', 'contact'];
+          const sections = ['about', 'skills', 'projects', 'contact'];
           const scrollPosition = window.scrollY + 120;
 
           for (const sectionId of sections) {
@@ -62,12 +65,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResumeModal }) => {
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'DSA', href: '#dsa' },
     { name: 'Contact', href: '#contact' },
   ];
 
   const handleResumeClick = (e: React.MouseEvent) => {
-    if (CONTACT_CONFIG.RESUME_URL && CONTACT_CONFIG.RESUME_URL.trim() !== '') {
+    if (safeResumeUrl) {
       // Normal external or file link
       return;
     }
@@ -125,15 +127,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResumeModal }) => {
             {/* Resume Button */}
             <div className="ml-3 pl-3 border-l border-slate-800">
               <a
-                href={CONTACT_CONFIG.RESUME_URL || '#resume'}
+                href={safeResumeUrl || '#resume'}
                 onClick={handleResumeClick}
-                target={CONTACT_CONFIG.RESUME_URL ? '_blank' : '_self'}
+                target={safeResumeUrl ? '_blank' : '_self'}
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-lg border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500 hover:text-slate-950 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 shadow-sm"
               >
                 <FileText className="w-3.5 h-3.5" />
                 <span>Resume</span>
-                {CONTACT_CONFIG.RESUME_URL && <ExternalLink className="w-3 h-3 opacity-70" />}
+                {safeResumeUrl && <ExternalLink className="w-3 h-3 opacity-70" />}
               </a>
             </div>
           </nav>
@@ -141,9 +143,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResumeModal }) => {
           {/* Mobile Hamburger Button */}
           <div className="flex md:hidden items-center gap-2">
             <a
-              href={CONTACT_CONFIG.RESUME_URL || '#resume'}
+              href={safeResumeUrl || '#resume'}
               onClick={handleResumeClick}
-              target={CONTACT_CONFIG.RESUME_URL ? '_blank' : '_self'}
+              target={safeResumeUrl ? '_blank' : '_self'}
               rel="noopener noreferrer"
               className="px-2.5 py-1 text-xs font-semibold rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
               aria-label="Resume"
